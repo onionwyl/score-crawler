@@ -30,6 +30,7 @@ while 1:
         open('code.jpg', 'wb').write(ir.content)
     # 调用pytesseract识别验证码
     code = decaptcha('code.jpg')
+    print("识别验证码:" + code)
     # os.system('code.jpg')
     # while 1:
     #     code = input('请输入验证码：')
@@ -52,14 +53,20 @@ while 1:
     }
     req = s.post('http://219.216.96.73/pyxx/login.aspx', data=data, headers=headers)
     soup = BeautifulSoup(req.text, 'html.parser')
+    if(req.text.find("用户名不存在") != -1):
+        print("用户名不存在")
+        exit(0)
+    if(req.text.find("密码错误") != -1):
+        print("密码错误")
+        exit(0)
     f = soup.select('frameset')
     if len(f) > 0:
         print('登录成功！')
         break
     else:
-        print('重试识别验证码')
+        print('验证码错误，重新识别验证码')
     if(count > 10):
-        print("用户名或密码错误")
+        print("识别系统故障")
         exit(0)
     count += 1
 

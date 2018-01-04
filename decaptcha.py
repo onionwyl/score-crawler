@@ -22,7 +22,6 @@ def decaptcha(image="code.jpg"):
     captcha = pytesseract.image_to_string(im, config='-psm 7')
     for r in rep:
         text = captcha.replace(r, rep[r])
-    print(captcha)
     return captcha
 
 if __name__ == '__main__':
